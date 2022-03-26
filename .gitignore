@@ -1,4 +1,3 @@
 .vs
 env
-MissingPersons/*
-ReportedPersons/*
+__pycache__
