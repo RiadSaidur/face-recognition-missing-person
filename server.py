@@ -1,8 +1,8 @@
 from flask import Flask, request
 from flask_restful import Api, Resource
-from db import deleteEncoding, getMissingPersonEncodings, saveMissingPersonEncodings
 
-from faceRecognition import findEncodings, findMissingPerson
+from database.db import deleteEncoding, getMissingPersonEncodings, saveMissingPersonEncodings
+from services.faceRecognition import findEncodings, findMissingPerson
 
 app = Flask(__name__)
 api = Api(app)
