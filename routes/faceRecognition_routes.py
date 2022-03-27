@@ -14,11 +14,11 @@ class FaceRecognition(Resource):
       if isFound == None:
         return { "found": isFound }, 404
       else:
-        return { "found": isFound }, 200
+        return { "found": isFound, "error": "Face did not match" }, 200
     except FileNotFoundError:
       return { "found": False, "error": "Image not found" }, 404
     except KeyError:
-      return { "successful": False, "error": "Invalid arguments" }, 500
+      return { "found": False, "error": "Invalid arguments" }, 500
   
   def post(self):
     try:
@@ -36,7 +36,7 @@ class FaceRecognition(Resource):
     except KeyError:
       return { "successful": False, "error": "Invalid arguments" }, 500
     except FileNotFoundError:
-      return { "found": False, "error": "Image not found" }, 404
+      return { "successful": False, "error": "Image not found" }, 404
   
   def delete(self):
     try:
