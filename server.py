@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_restful import Api, Resource
-from db import getMissingPersonEncodings, saveMissingPersonEncodings
+from db import deleteEncoding, getMissingPersonEncodings, saveMissingPersonEncodings
 
 from faceRecognition import findEncodings, findMissingPerson
 
@@ -16,12 +16,11 @@ class FaceRecognition(Resource):
       return { "found": isFound }, 404
     else:
       return { "found": isFound }, 200
-
-class Encode(Resource):
+  
   def post(self):
     try:
       missingPersonURL = request.get_json()['url']
-      missingPersonId = request.get_json()['mid']
+      missingPersonId = request.get_json()['face']
       images = [missingPersonURL]
       print(f'encoding started {missingPersonURL}')
       encodeList = findEncodings(images)
@@ -32,9 +31,17 @@ class Encode(Resource):
       return { "successful": False, "error": "Unable to store on Database" }, 500
     except KeyError:
       return { "successful": False, "error": "Invalid arguments" }, 500
+  
+  def delete(self):
+    face = request.get_json()['face']
+    isDeleted = deleteEncoding(face)
+    if isDeleted:
+      return { "successful": True }, 204
+    else:
+      return { "successful": False, "error": "Unable to delete encoding" }, 500
+
 
 api.add_resource(FaceRecognition, '/find/')
-api.add_resource(Encode, '/encode/')
 
 if __name__ == '__main__':
   app.run(debug=True)

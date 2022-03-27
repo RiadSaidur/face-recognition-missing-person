@@ -9,7 +9,7 @@ db = client.faceRecognition
 
 def saveMissingPersonEncodings(encodeList, faceList):
   try:
-    db.encodeList.update_one({ "pk": "BASE" }, { "$push": { "knownEncodings": list(encodeList[0]), "faceList": faceList } }, upsert=True)
+    db.encodeList.insert_one({ "faceEncoding": list(encodeList[0]), "face": faceList })
     return True
   except Exception as e:
     print(e)
@@ -17,12 +17,31 @@ def saveMissingPersonEncodings(encodeList, faceList):
 
 def getMissingPersonEncodings():
   try:
-    faceEncodings = db.encodeList.find_one({ "pk": "BASE" })
-    if not faceEncodings:
+    faceCursor = db.encodeList.aggregate([{
+      "$group": {
+        "_id": 'encodings',
+        "knownEncodings": {
+          "$push": "$faceEncoding"
+        },
+        "faceList": {
+          "$push": "$face"
+        }
+      }
+    }])
+    if not faceCursor:
       return None
-    knownEncodings = faceEncodings['knownEncodings']
-    encoding = [ numpy.array(faceEncoding) for faceEncoding in knownEncodings]
-    return {"encoding": encoding, "faces": faceEncodings['faceList']}
+    for faceEncodings in faceCursor:
+      knownEncodings = faceEncodings['knownEncodings']
+      encoding = [ numpy.array(faceEncoding) for faceEncoding in knownEncodings]
+      return {"encoding": encoding, "faces": faceEncodings['faceList']}
+  except Exception as e:
+    print(f'ops {e}')
+    return []
+
+def deleteEncoding(face):
+  try:
+    db.encodeList.delete_one({ "face": face })
+    return True
   except Exception as e:
     print(e)
     return False
