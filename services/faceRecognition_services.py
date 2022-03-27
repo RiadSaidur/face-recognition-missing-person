@@ -10,28 +10,26 @@ def getCvtColorImageFromURL(url):
     img = np.array(Image.open(urlopen(url)))
     return cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
   except HTTPError:
-    return None
+    raise FileNotFoundError
 
 # Run findEncodings function everytime a missing person
 # is added to the database to save time
 def findEncodings(missingPersonsList):
-  encodeList = []
-  for missingPerson in missingPersonsList :
-    img = getCvtColorImageFromURL(missingPerson)
-    print(f'img {img}')
-    if not img:
-      return None
-    encode = face_recognition.face_encodings(img)[0]
-    encodeList.append(encode)
+  try:
+    encodeList = []
+    for missingPerson in missingPersonsList :
+      img = getCvtColorImageFromURL(missingPerson)
+      encode = face_recognition.face_encodings(img)[0]
+      encodeList.append(encode)
 
-  return encodeList
+    return encodeList
+  except FileNotFoundError:
+    raise FileNotFoundError
 
 # reported person folder contains the images of the person that are reported as found
 def findMissingPerson(encodeListKnown, reportedPerson):
   try:
     person = getCvtColorImageFromURL(reportedPerson)
-    if not person:
-      raise FileNotFoundError
     encodePerson = face_recognition.face_encodings(person)[0]
     comparedFace = face_recognition.compare_faces(encodeListKnown['encoding'],encodePerson)
     faceDis = face_recognition.face_distance(encodeListKnown['encoding'],encodePerson)
@@ -42,6 +40,9 @@ def findMissingPerson(encodeListKnown, reportedPerson):
       return name
     else:
       return None
+
+  except FileNotFoundError:
+    raise FileNotFoundError
 
   except IndexError as e:
     print(e)

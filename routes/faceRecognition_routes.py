@@ -33,6 +33,8 @@ class FaceRecognition(Resource):
       return { "successful": False, "error": "Unable to store on Database" }, 500
     except KeyError:
       return { "successful": False, "error": "Invalid arguments" }, 500
+    except FileNotFoundError:
+      return { "found": False, "error": "Image not found" }, 404
   
   def delete(self):
     try:
