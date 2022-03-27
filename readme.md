@@ -29,7 +29,7 @@ Content-Type: application/json
   "url": "https://firebasestorage.googleapis.com/v0/b/alt=media"
 }
 ```
-## Add New Missing Person
+### Add New Missing Person
 ```http
 POST http://localhost:5000/find/ HTTP/1.1
 Content-Type: application/json
@@ -39,7 +39,7 @@ Content-Type: application/json
   "face": "shopno"
 }
 ```
-## Delete Missing Person
+### Delete Missing Person
 ```http
 DELETE http://localhost:5000/find/ HTTP/1.1
 Content-Type: application/json
