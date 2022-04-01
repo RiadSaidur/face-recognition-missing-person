@@ -1,4 +1,4 @@
-opencv-python-headless==4.2.0.32
+opencv-python-headless
 aniso8601==9.0.1
 click==8.0.4
 cmake==3.22.3
