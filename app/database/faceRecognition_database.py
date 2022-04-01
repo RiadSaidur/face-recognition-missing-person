@@ -1,11 +1,12 @@
 import numpy
 import pymongo
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
 # CLIENT_URL ='mongodb://localhost:27017/'
-CLIENT_URL ='mongodb+srv://<admin>:<ariana2838>@netjobs.jglqn.mongodb.net/faceRecognition?retryWrites=true&w=majority'
+CLIENT_URL = "mongodb+srv://admin:ariana2838@netjobs.jglqn.mongodb.net/faceRecognition?retryWrites=true&w=majority"
 
-client = MongoClient(CLIENT_URL)
+client = pymongo.MongoClient(CLIENT_URL, server_api=ServerApi('1'))
 db = client.faceRecognition
 
 def saveMissingPersonEncodings(encodeList, faceList):

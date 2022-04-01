@@ -1,8 +1,8 @@
 from flask import request
 from flask_restful import Resource
 
-from database.faceRecognition_database import deleteEncoding, getMissingPersonEncodings, saveMissingPersonEncodings
-from services.faceRecognition_services import findEncodings, findMissingPerson
+from app.database.faceRecognition_database import deleteEncoding, getMissingPersonEncodings, saveMissingPersonEncodings
+from app.services.faceRecognition_services import findEncodings, findMissingPerson
 
 
 class FaceRecognition(Resource):
@@ -12,9 +12,9 @@ class FaceRecognition(Resource):
       encodedList = getMissingPersonEncodings()
       isFound = findMissingPerson(encodedList, reportedPersonURL)
       if isFound == None:
-        return { "found": isFound }, 404
+        return { "found": isFound, "error": "Face did not match" }, 404
       else:
-        return { "found": isFound, "error": "Face did not match" }, 200
+        return { "found": isFound }, 200
     except FileNotFoundError:
       return { "found": False, "error": "Image not found" }, 404
     except KeyError:
