@@ -2,7 +2,8 @@ import numpy
 import pymongo
 from pymongo import MongoClient
 
-CLIENT_URL ='mongodb://localhost:27017/'
+# CLIENT_URL ='mongodb://localhost:27017/'
+CLIENT_URL ='mongodb+srv://<admin>:<ariana2838>@netjobs.jglqn.mongodb.net/faceRecognition?retryWrites=true&w=majority'
 
 client = MongoClient(CLIENT_URL)
 db = client.faceRecognition
