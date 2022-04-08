@@ -1,10 +1,18 @@
+import os
 import numpy
 import pymongo
-from pymongo import MongoClient
 from pymongo.server_api import ServerApi
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # CLIENT_URL ='mongodb://localhost:27017/'
-CLIENT_URL = "mongodb+srv://admin:ariana2838@netjobs.jglqn.mongodb.net/faceRecognition?retryWrites=true&w=majority"
+DB_HOST = os.getenv('DB_HOST')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
+CLIENT_URL = f'mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}?retryWrites=true&w=majority'
 
 client = pymongo.MongoClient(CLIENT_URL, server_api=ServerApi('1'))
 db = client.faceRecognition
