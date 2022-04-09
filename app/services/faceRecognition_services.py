@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 import face_recognition
 
+from app.database.faceRecognition_database import getExistingMissingPersonEncoding
+
 def getCvtColorImageFromURL(url):
   try:
     img = np.array(Image.open(urlopen(url)))
@@ -47,3 +49,10 @@ def findMissingPerson(encodeListKnown, reportedPerson):
   except IndexError as e:
     print(e)
     return None
+
+def doesPersonExists(missingPersonId):
+  isEncoded = getExistingMissingPersonEncoding(missingPersonId)
+  if isEncoded is not None:
+    return True
+  else:
+    return False

@@ -44,7 +44,7 @@ def getMissingPersonEncodings():
       encoding = [ numpy.array(faceEncoding) for faceEncoding in knownEncodings]
       return {"encoding": encoding, "faces": faceEncodings['faceList']}
   except Exception as e:
-    print(f'ops {e}')
+    print(e)
     return []
 
 def deleteEncoding(face):
@@ -54,3 +54,7 @@ def deleteEncoding(face):
   except Exception as e:
     print(e)
     return False
+
+def getExistingMissingPersonEncoding(missingPersonId):
+  isEncoded = db.encodeList.find_one({ 'face': missingPersonId })
+  return isEncoded

@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource
 
 from app.database.faceRecognition_database import deleteEncoding, getMissingPersonEncodings, saveMissingPersonEncodings
-from app.services.faceRecognition_services import findEncodings, findMissingPerson
+from app.services.faceRecognition_services import doesPersonExists, findEncodings, findMissingPerson
 
 
 class FaceRecognition(Resource):
@@ -24,6 +24,9 @@ class FaceRecognition(Resource):
     try:
       missingPersonURL = request.get_json()['url']
       missingPersonId = request.get_json()['face']
+      doesExist = doesPersonExists(missingPersonId)
+      if doesExist:
+        return { "successful": False, "error": "Person with this ID already exists" }, 409
       images = [missingPersonURL]
       print(f'encoding started {missingPersonURL}')
       encodeList = findEncodings(images)
