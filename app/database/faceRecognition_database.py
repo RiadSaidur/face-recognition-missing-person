@@ -24,6 +24,14 @@ def saveMissingPersonEncodings(encodeList, faceList):
     print(e)
     return False
 
+def updateMissingPersonEncodings(encodeList, faceList):
+  try:
+    db.encodeList.update_one({ "face": faceList },{ "$set": { "faceEncoding": list(encodeList[0]) } })
+    return True
+  except Exception as e:
+    print(f'ops {e}')
+    return False
+
 def getMissingPersonEncodings():
   try:
     faceCursor = db.encodeList.aggregate([{
