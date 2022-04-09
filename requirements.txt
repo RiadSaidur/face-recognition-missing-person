@@ -16,6 +16,7 @@ numpy==1.22.3
 opencv-python==4.5.5.64
 Pillow==9.0.1
 pymongo==4.0.2
+python-dotenv==0.20.0
 pytz==2022.1
 six==1.16.0
 Werkzeug==2.0.3
