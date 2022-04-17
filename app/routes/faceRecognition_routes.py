@@ -8,7 +8,7 @@ from app.services.faceRecognition_services import doesPersonExists, findEncoding
 class FaceRecognition(Resource):
   def get(self):
     try:
-      reportedPersonURL = request.get_json()['url']
+      reportedPersonURL = request.args.get('url')
       encodedList = getMissingPersonEncodings()
       isFound = findMissingPerson(encodedList, reportedPersonURL)
       if isFound == None:
