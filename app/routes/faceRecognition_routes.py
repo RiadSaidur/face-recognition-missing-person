@@ -19,6 +19,8 @@ class FaceRecognition(Resource):
       return { "found": False, "error": "Image not found" }, 404
     except KeyError:
       return { "found": False, "error": "Invalid arguments" }, 400
+    except TypeError:
+      return { "found": False, "error": "url argument required" }, 400
   
   def post(self):
     try:
